@@ -1,8 +1,10 @@
-
 import { auth, signOut } from "@/auth";
 import { redirect } from "next/navigation";
+import Link from "next/link";
+import { requireRole } from "@/app/lib/auth-guard";
 
 export default async function DashboardPage() {
+  await requireRole("student");
   const session = await auth();
 
   if (!session?.user) {
@@ -14,9 +16,7 @@ export default async function DashboardPage() {
       <div className="mx-auto max-w-4xl">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">
-              MindGuard AI
-            </h1>
+            <h1 className="text-3xl font-bold text-slate-900">MindGuard AI</h1>
             <p className="mt-2 text-slate-600">
               Your personal student wellbeing space
             </p>
@@ -36,7 +36,12 @@ export default async function DashboardPage() {
             </button>
           </form>
         </header>
-
+        <Link
+          href="/chat"
+          className="inline-flex rounded-xl bg-blue-600 px-5 py-3 font-medium text-white hover:bg-blue-700"
+        >
+          Open MindGuard Chat
+        </Link>
         <section className="mt-10 rounded-2xl border border-slate-200 bg-white p-8 shadow-sm">
           <p className="text-sm font-medium text-indigo-600">
             Student dashboard
@@ -52,19 +57,17 @@ export default async function DashboardPage() {
 
           <div className="mt-6 space-y-2 text-sm text-slate-700">
             <p>
-              <span className="font-medium">Email:</span>{" "}
-              {session.user.email}
+              <span className="font-medium">Email:</span> {session.user.email}
             </p>
             <p>
-              <span className="font-medium">Role:</span>{" "}
-              {session.user.role}
+              <span className="font-medium">Role:</span> {session.user.role}
             </p>
           </div>
         </section>
 
         <p className="mt-6 text-sm text-slate-500">
-          This is the initial dashboard. Wellbeing check-ins and AI
-          companion features will be added in later steps.
+          This is the initial dashboard. Wellbeing check-ins and AI companion
+          features will be added in later steps.
         </p>
       </div>
     </main>

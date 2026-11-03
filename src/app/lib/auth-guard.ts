@@ -1,4 +1,3 @@
-
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
 
@@ -18,7 +17,7 @@ export async function requireRole(...allowedRoles: AppRole[]) {
   const user = await requireUser();
 
   if (!allowedRoles.includes(user.role as AppRole)) {
-    redirect("/dashboard");
+    redirect(user.role === "counselor" ? "/counselor" : "/dashboard");
   }
 
   return user;
